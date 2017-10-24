@@ -1,6 +1,10 @@
 import React from 'react';
+import { connect } from 'react-redux'
 import { Image, Text, TouchableHighlight, View, ScrollView, StyleSheet} from 'react-native';
 import { FormLabel, FormInput, CheckBox, Button, FormValidationMessage, Avatar, Card, ButtonGroup} from 'react-native-elements';
+
+import {getMember} from '../actions/member';
+import Member from './Member';
 
 class Members extends React.Component {
     static navigationOptions = {
@@ -14,59 +18,40 @@ class Members extends React.Component {
         selectedIndex: 0,
         checked: true
       }
-      this.updateIndex = this.updateIndex.bind(this)
+      
     }
 
-    updateIndex (selectedIndex) {
-      this.setState({selectedIndex})
+    componentWillMount(){
+      this.props.dispatch(getMember());
     }
+
   
     render() {
-      const buttons = ['Yes', 'No']
-      const { selectedIndex } = this.state
+
+      var output = [];
+      var members = this.props.member;
+
+      console.log(members);
+      
+      if(members == undefined){
+        var output = [];
+      }else{
+        members.forEach(function(member, key, map){
+          var mem = <Member member={member} key={member._id}/>
+          output.push(mem);
+        })
+      }
+      
+
+
       return (
+
         <ScrollView>
           <View style={styles.histContainer}>
-              
-              <Card
-                  title='Rabbi'
-                  >
-                  
-                  <View style={{flexDirection: "row"}}>
-                      <Image
-                          style={styles.image}
-                          resizeMode="cover"
-                          source={{ uri: "https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg" }}
-                      />
-                  </View>
-                  <Text style={{ marginBottom: 10, marginTop: 10 }}>
-                     
-                  </Text>
-
-                  <CheckBox
-                    title='Auto Meal'
-                    checked={this.state.checked}
-                  />
-
-                  <ButtonGroup
-                    onPress={this.updateIndex}
-                    selectedIndex={selectedIndex}
-                    buttons={buttons}
-                    containerStyle={{height: 40}} />
-
-                  <Button
-                      icon={{ name: 'code' }}
-                      backgroundColor='#03A9F4'
-                      fontFamily='Lato'
-                      title='View Detail' 
-                      onPress={() => navigate('ChatHistory')} />
-                      
-              </Card>
-
-              
+            {output}
           </View>
 
-      </ScrollView>
+        </ScrollView>
         
       );
     }
@@ -83,4 +68,11 @@ class Members extends React.Component {
     }
 })
 
-  export default Members
+const mapStateToProps = (state) => {
+  console.log(state);
+  return {
+    member: state.member.member
+  };
+};
+
+  export default connect(mapStateToProps)(Members);

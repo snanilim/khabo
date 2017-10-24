@@ -1,6 +1,9 @@
 import React from 'react';
+import { connect } from 'react-redux'
 import { Image, Text, TouchableHighlight, View, ScrollView, StyleSheet} from 'react-native';
 import { FormLabel, FormInput, CheckBox, Button, FormValidationMessage, Avatar, Card, ButtonGroup} from 'react-native-elements';
+
+import {addMember} from '../actions/member';
 
 class AddMember extends React.Component {
     static navigationOptions = {
@@ -11,19 +14,31 @@ class AddMember extends React.Component {
     constructor () {
       super()
       this.state = {
-        selectedIndex: 0,
-        checked: true
+        name: '',
+        phone: '',
+        designation: '',
+        email: '',
+        auto_meal: false,
+
       }
-      this.updateIndex = this.updateIndex.bind(this)
+      // this.updateIndex = this.updateIndex.bind(this)
     }
 
-    updateIndex (selectedIndex) {
-      this.setState({selectedIndex})
+    submit(){
+      var member = {};
+      member['name']= this.state.name;
+      member['phone']= this.state.phone;
+      member['designation']= this.state.designation;
+      member['email']= this.state.email;
+      member['auto_meal']= this.state.auto_meal;
+
+      this.props.dispatch(addMember(member));
     }
+
+
   
     render() {
-      const buttons = ['Yes', 'No']
-      const { selectedIndex } = this.state
+
       return (
         <ScrollView>
           <View style={styles.histContainer}>
@@ -32,16 +47,28 @@ class AddMember extends React.Component {
                   title='Rabbi'
                   >
                   <FormLabel>Name</FormLabel>
-                  <FormInput/>
+                  <FormInput onChangeText={(value) => { this.setState({ name: value }) }} />
 
                   <FormLabel>Phone</FormLabel>
-                  <FormInput/>
+                  <FormInput onChangeText={(value) => { this.setState({ phone: value }) }} />
 
                   <FormLabel>Designation</FormLabel>
-                  <FormInput/>
+                  <FormInput onChangeText={(value) => { this.setState({ designation: value }) }}/>
 
                   <FormLabel>Email</FormLabel>
-                  <FormInput/>
+                  <FormInput onChangeText={(value) => { this.setState({ email: value }) }}/>
+
+                  <CheckBox
+                      title='Auto Meal'
+                      checked={this.state.auto_meal}
+                      onPress={() => this.setState({ auto_meal: !this.state.auto_meal })}
+                  />
+
+                  <Button
+                    onPress={() => this.submit()}
+                    backgroundColor='#03A9F4'
+                    title="Add Member"
+                    />
                       
               </Card>
 
@@ -65,4 +92,10 @@ class AddMember extends React.Component {
     }
 })
 
-  export default AddMember
+const mapStateToProps = (state) => {
+  return {
+    
+  };
+};
+
+export default connect(mapStateToProps)(AddMember);

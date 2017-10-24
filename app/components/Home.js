@@ -4,6 +4,8 @@ import { Image, Text, ScrollView, TouchableHighlight, View,  StyleSheet} from 'r
 import { Icon, PricingCard, Button, Card} from 'react-native-elements';
 
 
+
+
 class Home extends React.Component {
     static navigationOptions = {
       tabBarLabel: 'Homes',
@@ -16,6 +18,8 @@ class Home extends React.Component {
 
         }
       }
+
+
       
   
     render() {
