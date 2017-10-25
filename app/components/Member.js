@@ -1,9 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux'
-import { Image, Text, TouchableHighlight, View, ScrollView, StyleSheet} from 'react-native';
+import { Image, Text, TouchableHighlight, View, ScrollView, StyleSheet, Alert} from 'react-native';
 import { FormLabel, FormInput, CheckBox, Button, FormValidationMessage, Avatar, Card, ButtonGroup} from 'react-native-elements';
 
-import {getMember} from '../actions/member';
+import {getMember, mealTodayAction} from '../actions/member';
 
 class Member extends React.Component {
     static navigationOptions = {
@@ -15,11 +15,12 @@ class Member extends React.Component {
       super()
       this.state = {
         selectedIndex: 0,
-        checked: true,
+        checked: props.member.auto_meal,
         member: props.member
       }
-      this.updateIndex = this.updateIndex.bind(this)
+      this.updateMealToday = this.updateMealToday.bind(this)
     }
+    // ------------------------------------------------------------------
 
 
     componentWillMount(){
@@ -35,10 +36,97 @@ class Member extends React.Component {
       })
     }
 
+    // ------------------------------------------------------------------
 
-    updateIndex (selectedIndex) {
+
+    updateMealToday (selectedIndex) {
+      var that = this;
+      if(selectedIndex == 0){
+        var val = 'ON'
+      }else{
+        var val = 'OFF'
+      }
+      Alert.alert(
+          "   " + val,
+          'Are You Sure You Want To ' + val + ' Your Meal Today',
+          [
+              { text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel' },
+              { text: 'Yes', onPress: () => { that.mealTodayHelper(selectedIndex) } },
+          ],
+          { cancelable: false }
+      )
+      
+    }
+
+    mealTodayHelper(selectedIndex){
+
+      if(selectedIndex == 0){
+        var val = true
+      }else{
+        var val = false
+      }
+
+      var bool_meal = {};
+      bool_meal['id'] = this.state.member._id;
+      bool_meal['index'] = val;
+      bool_meal['name'] = "today_meal";
+
+      mealTodayAction(bool_meal, function(err, res){
+        if(err){
+          console.log(err);
+        }else{
+          alert("Update Completed")
+        }
+      });
       this.setState({selectedIndex})
     }
+
+    // ------------------------------------------------------------------
+
+    updateAutoMeal(){
+      var that = this;
+      var autoMeal = !this.state.member.auto_meal;
+      if(autoMeal){
+        var val = 'ON'
+      }else{
+        var val = 'OFF'
+      }
+      Alert.alert(
+          "   " + val,
+          'Are You Sure You Want To ' + val + ' Your Auto Meal',
+          [
+              { text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel' },
+              { text: 'Yes', onPress: () => { that.mealAutoHelper(autoMeal) } },
+          ],
+          { cancelable: false }
+      )
+    }
+
+    mealAutoHelper(autoMeal){
+      if(autoMeal){
+        var val = true
+      }else{
+        var val = false
+      }
+
+      var bool_meal = {};
+      bool_meal['id'] = this.state.member._id;
+      bool_meal['index'] = val;
+      bool_meal['name'] = "auto_meal";
+
+      mealTodayAction(bool_meal, function(err, res){
+        if(err){
+          console.log(err);
+        }else{
+          alert("Update Completed")
+        }
+      });
+
+      this.setState({
+        checked: autoMeal
+      })
+    }
+    // ------------------------------------------------------------------
   
     render() {
       const buttons = ['Yes', 'No']
@@ -65,21 +153,22 @@ class Member extends React.Component {
 
                   <CheckBox
                     title='Auto Meal'
-                    checked={this.state.member.auto_meal}
+                    checked={this.state.checked}
+                    onPress={ ()=> this.updateAutoMeal() }
                   />
 
                   <ButtonGroup
-                    onPress={this.updateIndex}
+                    onPress={this.updateMealToday}
                     selectedIndex={selectedIndex}
                     buttons={buttons}
                     containerStyle={{height: 40}} />
 
-                  <Button
+                  {/* <Button
                       icon={{ name: 'code' }}
                       backgroundColor='#03A9F4'
                       fontFamily='Lato'
                       title='View Detail' 
-                      onPress={() => navigate('ChatHistory')} />
+                      onPress={() => navigate('ChatHistory')} /> */}
                       
               </Card>
 

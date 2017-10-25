@@ -43,6 +43,47 @@ export function getMember(){
 }
 
 
+export function mealTodayAction(bool_meal){
+    var url =  config.SERVER_URL + 'set_bool_meal';
+    console.log(url);
+    
+        axios.post(url, {
+            headers: { "Content-Type": "application/json" },
+            bool_meal: bool_meal
+            
+        }).then(function(res){
+
+        }).catch(function(err){
+
+        })
+    
+}
+
+
+export function totalMealToday(){
+    var url =  config.SERVER_URL + 'get_today_meal';
+    
+    return (dispatch) => {
+        axios.get(url, {
+            headers: { "Content-Type": "application/json" },
+            
+        }).then(function(res){
+
+            dispatch({
+                type:"GET_TODAY_MEAL",
+                total_today_meal: res.data
+            })
+
+        }).catch(function(err){
+            dispatch({
+                type:"GET_TODAY_MEAL_ERROR",
+                total_today_meal: [res]
+            })
+        })
+    }
+}
+
+
 export function autoUpdateMeal(){
     var url =  config.SERVER_URL + 'add_member';
     console.log(url);

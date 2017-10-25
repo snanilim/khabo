@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { Image, Text, TouchableHighlight, View, ScrollView, StyleSheet} from 'react-native';
 import { FormLabel, FormInput, CheckBox, Button, FormValidationMessage, Avatar, Card, ButtonGroup} from 'react-native-elements';
 
-import {getMember} from '../actions/member';
+import {getMember, totalMealToday} from '../actions/member';
 import Member from './Member';
 
 class Members extends React.Component {
@@ -23,6 +23,7 @@ class Members extends React.Component {
 
     componentWillMount(){
       this.props.dispatch(getMember());
+      this.props.dispatch(totalMealToday());
     }
 
   

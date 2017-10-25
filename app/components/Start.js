@@ -1,8 +1,9 @@
 import React, { PureComponent } from 'react';
+import { connect } from 'react-redux'
 import { View, StyleSheet, Button } from 'react-native';
 import { TabViewAnimated, TabBar, SceneMap } from 'react-native-tab-view';
 
-import {autoUpdateMeal} from '../actions/member';
+import {autoUpdateMeal, totalMealToday} from '../actions/member';
 
 
 import Home from './Home';
@@ -13,7 +14,7 @@ const FirstRoute = () => <Home />;
 const SecondRoute = () => <Members />;
 const ThirdRoute = () => <AddMember />;
 
-export default class Start extends PureComponent {
+class Start extends PureComponent {
     static navigationOptions = {
         tabBarLabel: 'Home',
       };
@@ -28,6 +29,7 @@ export default class Start extends PureComponent {
 
     componentWillMount(){
       // autoUpdateMeal();
+      
     }
 
   _handleIndexChange = index => this.setState({ index });
@@ -62,3 +64,12 @@ const styles = StyleSheet.create({
     flex: 1,
   },
 });
+
+const mapStateToProps = (state) => {
+  console.log(state);
+  return {
+    
+  };
+};
+
+export default connect(mapStateToProps)(Start);

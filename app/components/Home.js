@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { Image, Text, ScrollView, TouchableHighlight, View,  StyleSheet} from 'react-native';
 
 import { Icon, PricingCard, Button, Card} from 'react-native-elements';
@@ -43,19 +44,19 @@ class Home extends React.Component {
                 </Text>
 
                 <Text style={{ marginBottom: 10, marginTop: 10 }}>
-                    13
+                    {this.props.total_today_meal.length}
                 </Text>
 
                 <Text style={{ marginBottom: 10, marginTop: 10 }}>
-                    Total Person: 20
+                    Total Person: {this.props.member.length}
                 </Text>
 
                 <Text style={{ marginBottom: 10, marginTop: 10 }}>
-                    Meal Yes: 10
+                    Meal Yes: {this.props.total_today_meal.length}
                 </Text>
 
                 <Text style={{ marginBottom: 10, marginTop: 10 }}>
-                    Meal No: 10
+                    Meal No: {this.props.member.length - this.props.total_today_meal.length}
                 </Text>
 
                 
@@ -76,4 +77,12 @@ const styles = StyleSheet.create({
     },
   });
   
-  export default Home
+  const mapStateToProps = (state) => {
+    console.log(state);
+    return {
+      member: state.member.member,
+      total_today_meal: state.member.total_today_meal
+    };
+  };
+  
+    export default connect(mapStateToProps)(Home);
