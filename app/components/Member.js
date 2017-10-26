@@ -14,34 +14,23 @@ class Member extends React.Component {
     constructor (props) {
       super()
       this.state = {
-        selectedIndex: 0,
+        checkedToday: props.member.today_meal,
         checked: props.member.auto_meal,
         member: props.member
       }
-      this.updateMealToday = this.updateMealToday.bind(this)
+      // this.updateMealToday = this.updateMealToday.bind(this)
     }
     // ------------------------------------------------------------------
 
 
-    componentWillMount(){
-      var member = this.state.member;
-      console.log(member.today_meal);
-      if(member.today_meal){
-        var val = 0;
-      }else{
-        var val = 1;
-      }
-      this.setState({
-        selectedIndex: val
-      })
-    }
 
     // ------------------------------------------------------------------
 
 
-    updateMealToday (selectedIndex) {
+    updateMealToday () {
       var that = this;
-      if(selectedIndex == 0){
+      var mealToday = !this.state.checkedToday;
+      if(mealToday){
         var val = 'ON'
       }else{
         var val = 'OFF'
@@ -51,16 +40,16 @@ class Member extends React.Component {
           'Are You Sure You Want To ' + val + ' Your Meal Today',
           [
               { text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel' },
-              { text: 'Yes', onPress: () => { that.mealTodayHelper(selectedIndex) } },
+              { text: 'Yes', onPress: () => { that.mealTodayHelper(mealToday) } },
           ],
           { cancelable: false }
       )
       
     }
 
-    mealTodayHelper(selectedIndex){
+    mealTodayHelper(mealToday){
 
-      if(selectedIndex == 0){
+      if(mealToday){
         var val = true
       }else{
         var val = false
@@ -78,14 +67,16 @@ class Member extends React.Component {
           alert("Update Completed")
         }
       });
-      this.setState({selectedIndex})
+      this.setState({
+        checkedToday: mealToday
+      })
     }
 
     // ------------------------------------------------------------------
 
     updateAutoMeal(){
       var that = this;
-      var autoMeal = !this.state.member.auto_meal;
+      var autoMeal = !this.state.autoMeal;
       if(autoMeal){
         var val = 'ON'
       }else{
@@ -129,9 +120,8 @@ class Member extends React.Component {
     // ------------------------------------------------------------------
   
     render() {
-      const buttons = ['Yes', 'No']
-      const { selectedIndex } = this.state
-      console.log(this.state.member);
+
+      
       return (
         
           <View>
@@ -157,18 +147,13 @@ class Member extends React.Component {
                     onPress={ ()=> this.updateAutoMeal() }
                   />
 
-                  <ButtonGroup
-                    onPress={this.updateMealToday}
-                    selectedIndex={selectedIndex}
-                    buttons={buttons}
-                    containerStyle={{height: 40}} />
+                  <Button
+                  onPress={() => this.updateMealToday()}
+                  disabled = {false}
+                  backgroundColor = {this.state.checkedToday ? 'green' : 'red'}
+                  large
+                  title= { this.state.checkedToday ? 'Today Meal: YES' : 'Today Meal: NO'} />
 
-                  {/* <Button
-                      icon={{ name: 'code' }}
-                      backgroundColor='#03A9F4'
-                      fontFamily='Lato'
-                      title='View Detail' 
-                      onPress={() => navigate('ChatHistory')} /> */}
                       
               </Card>
 

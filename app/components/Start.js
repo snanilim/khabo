@@ -25,14 +25,33 @@ class Start extends PureComponent {
           { key: '2', title: 'Member' },
           { key: '3', title: 'AddMember' },
         ],
+        callAutoUpdateMeal: true,
     };
 
-    componentWillMount(){
-      // autoUpdateMeal();
+    componentWillReceiveProps(newprops){
+      var member = newprops.member;
+
+      var rawDate = member[0].updatedAt;
+
+      var todayDate = new Date().toLocaleDateString();
+      var callAutoUpdateMeal = this.state.callAutoUpdateMeal;
+
+      if(todayDate != new Date(rawDate).toLocaleDateString() && callAutoUpdateMeal){
+        this.props.dispatch(autoUpdateMeal());
+        this.setState({
+          callAutoUpdateMeal: false
+        })
+      }
       
     }
 
+
+
   _handleIndexChange = index => this.setState({ index });
+
+  onPositionChange(){
+    alert('ok');
+  }
 
   _renderHeader = props => <TabBar {...props} />;
 
@@ -52,6 +71,7 @@ class Start extends PureComponent {
         renderScene={this._renderScene}
         renderHeader={this._renderHeader}
         onIndexChange={this._handleIndexChange}
+        onSwipeEnd = {this.onPositionChange.bind(this)}
       />
       
       
@@ -66,9 +86,8 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state) => {
-  console.log(state);
   return {
-    
+    member: state.member.member
   };
 };
 

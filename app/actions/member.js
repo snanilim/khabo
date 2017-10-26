@@ -1,6 +1,7 @@
 import axios from 'axios';
 // CONSTANTS
 import config from '../config';
+import { connect } from 'react-redux'
 
 export function addMember(member){
     var url =  config.SERVER_URL + 'add_member';
@@ -85,10 +86,17 @@ export function totalMealToday(){
 
 
 export function autoUpdateMeal(){
-    var url =  config.SERVER_URL + 'add_member';
-    console.log(url);
-    axios.post(url, {
-        headers: { "Content-Type": "application/json" },
-       
-    })
+    var url =  config.SERVER_URL + 'auto_update_meal';
+    return (dispatch) => {
+        axios.post(url, {
+            
+            headers: { "Content-Type": "application/json" },
+        
+        }).then(function(res){
+            dispatch(totalMealToday());
+            dispatch(getMember());
+        }).catch(function(err){
+            console.log(err);
+        })
+    }
 }
