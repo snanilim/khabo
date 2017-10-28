@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux'
+import Icon from 'react-native-vector-icons/EvilIcons'
 import { Image, Text, TouchableHighlight, View, ScrollView, StyleSheet, Alert} from 'react-native';
 import { FormLabel, FormInput, CheckBox, Button, FormValidationMessage, Avatar, Card, ButtonGroup} from 'react-native-elements';
 

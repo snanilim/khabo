@@ -1,29 +1,46 @@
 import React from 'react';
 import { connect } from 'react-redux'
-import { Image, Text, TouchableHighlight, View, ScrollView, StyleSheet} from 'react-native';
+import Icon from 'react-native-vector-icons/EvilIcons'
+import { Image, Text, TouchableHighlight, View, ScrollView, StyleSheet, RefreshControl} from 'react-native';
 import { List, ListItem, Card} from 'react-native-elements';
 
-import {addMember} from '../actions/member';
+import {getMember, totalMealToday} from '../actions/member';
 
 class MealList extends React.Component {
 
     constructor () {
       super()
       this.state = {
-
+        refreshing: false,
 
       }
 
     }
 
+    _onRefresh() {
+      this.setState({refreshing: true});
+      var that = this;
+      this.props.dispatch(getMember(function(){
 
+        that.setState({refreshing: false});
+
+      }));
+
+    }
 
 
   
     render() {
         var list = this.props.member;
       return (
-        <ScrollView>
+        <ScrollView
+            refreshControl={
+              <RefreshControl
+                refreshing={this.state.refreshing}
+                onRefresh={this._onRefresh.bind(this)}
+              />
+            }
+        >
           <Card
                   title="Today's Meal List"
                   >

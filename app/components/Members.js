@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux'
-import { Image, Text, TouchableHighlight, View, ScrollView, StyleSheet} from 'react-native';
+import Icon from 'react-native-vector-icons/EvilIcons'
+import { Image, Text, TouchableHighlight, View, ScrollView, StyleSheet, RefreshControl} from 'react-native';
 import { FormLabel, FormInput, CheckBox, Button, FormValidationMessage, Avatar, Card, ButtonGroup} from 'react-native-elements';
 
 import {getMember, totalMealToday} from '../actions/member';
@@ -11,15 +12,28 @@ class Members extends React.Component {
       super()
       this.state = {
         selectedIndex: 0,
-        checked: true
+        checked: true,
+        refreshing: false,
       }
       
     }
 
     componentWillMount(){
       this.props.dispatch(getMember());
-      this.props.dispatch(totalMealToday());
     }
+
+
+    _onRefresh() {
+      this.setState({refreshing: true});
+      var that = this;
+      this.props.dispatch(getMember(function(){
+
+        that.setState({refreshing: false});
+
+      }));
+
+    }
+
 
   
     render() {
@@ -27,7 +41,7 @@ class Members extends React.Component {
       var output = [];
       var members = this.props.member;
 
-      console.log(members);
+      // console.log(this.state.refreshing);
       
       if(members == undefined){
         var output = [];
@@ -42,7 +56,14 @@ class Members extends React.Component {
 
       return (
 
-        <ScrollView>
+        <ScrollView
+            refreshControl={
+              <RefreshControl
+                refreshing={this.state.refreshing}
+                onRefresh={this._onRefresh.bind(this)}
+              />
+            }
+        >
           <View>
             {output}
           </View>

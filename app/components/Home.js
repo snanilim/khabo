@@ -1,20 +1,33 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Image, Text, ScrollView, TouchableHighlight, View,  StyleSheet} from 'react-native';
+import Icon from 'react-native-vector-icons/EvilIcons'
+import { Image, Text, ScrollView, TouchableHighlight, View,  StyleSheet, RefreshControl} from 'react-native';
 
-import { Icon, PricingCard, Button, Card, Badge} from 'react-native-elements';
+import { PricingCard, Button, Card, Badge} from 'react-native-elements';
 
-
+import {getMember, totalMealToday} from '../actions/member';
 
 
 class Home extends React.Component {
     constructor() {
         super()
         this.state = {
-
+          refreshing: false,
         }
       }
 
+      _onRefresh() {
+        this.setState({refreshing: true});
+
+        this.props.dispatch(totalMealToday());
+        var that = this;
+        this.props.dispatch(getMember(function(){
+  
+          that.setState({refreshing: false});
+  
+        }));
+  
+      }
 
       
   
@@ -22,7 +35,14 @@ class Home extends React.Component {
       var todayDate = new Date().toLocaleDateString();
         
       return (
-        <ScrollView>
+        <ScrollView
+            refreshControl={
+              <RefreshControl
+                refreshing={this.state.refreshing}
+                onRefresh={this._onRefresh.bind(this)}
+              />
+            }
+        >
 
             <Card
                 title="Today's Meal"

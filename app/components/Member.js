@@ -20,7 +20,8 @@ class Member extends React.Component {
     componentWillReceiveProps(newprops){
       var d = new Date();
       var hour = d.getHours();
-      if(hour>10){
+      
+      if(hour>10 && hour<15){
         this.setState({
           disable: true
         })
@@ -43,7 +44,7 @@ class Member extends React.Component {
 
       var d = new Date();
       var hour = d.getHours();
-      if(hour>10){
+      if(hour>10 && hour<15){
         alert("Times Up To Update");
       }else{
         Alert.alert(
@@ -89,7 +90,7 @@ class Member extends React.Component {
 
     updateAutoMeal(){
       var that = this;
-      var autoMeal = !this.state.autoMeal;
+      var autoMeal = !this.state.checked;
       if(autoMeal){
         var val = 'ON'
       }else{

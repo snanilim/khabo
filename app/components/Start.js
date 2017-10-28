@@ -61,22 +61,8 @@ class Start extends PureComponent {
 
   _handleIndexChange = index => {
     this.setState({ index })
-    this.onPositionChange(index);
   };
 
-  onPositionChange(index){
-    if(index == 0){
-      this.props.dispatch(getMember());
-      this.props.dispatch(totalMealToday());
-    }else if(index == 1){
-      this.props.dispatch(getMember());
-    }else if(index == 3){
-      this.props.dispatch(getMember());
-    }else{
-
-    }
-
-  }
 
   _renderHeader = props => <TabBar style={{ backgroundColor: '#00b9e6' }} {...props} />;
 

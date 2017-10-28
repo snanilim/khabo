@@ -13,7 +13,7 @@ const AppWithNavigationState = StackNavigator({
       screen: MyHomeScreen,
       navigationOptions: {
         headerTitle: 'KHADOK',
-        headerStyle: {backgroundColor: '#00b9e6', textAlign: 'center',},
+        headerStyle: {backgroundColor: '#00b9e6'},
         headerTitleStyle: {color: '#fff'},
       },
     }

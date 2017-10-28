@@ -23,7 +23,7 @@ export function addMember(member){
 }
 
 
-export function getMember(){
+export function getMember(callback){
     var url =  config.SERVER_URL + 'get_member';
 
     return (dispatch) => {
@@ -31,11 +31,13 @@ export function getMember(){
             headers: { "Content-Type": "application/json" },
             
         }).then(function(res){
-
+            
             dispatch({
                 type:"GET_MEMBER",
                 member: res.data
             })
+
+            callback();
 
         }).catch(function(err){
             dispatch({
