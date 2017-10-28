@@ -6,16 +6,18 @@ import { TabNavigator, StackNavigator } from 'react-navigation';
 
 // import components
 import MyHomeScreen from '../components/Start';
-
+import MyMembersScreen from '../components/Members';
+import AddMembersScreen from '../components/AddMember'
 
 const AppWithNavigationState = StackNavigator({
     Home: {
       screen: MyHomeScreen,
-      navigationOptions: {
-        headerTitle: 'KHADOK',
-        headerStyle: {backgroundColor: '#00b9e6', textAlign: 'center',},
-        headerTitleStyle: {color: '#fff'},
-      },
+    },
+    Members: {
+      screen: MyMembersScreen,
+    },
+    AddMember:{
+        screen: AddMembersScreen,
     }
   });
   

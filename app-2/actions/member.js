@@ -12,10 +12,7 @@ export function addMember(member){
             member: member
             
         }).then(function(res){
-            dispatch({
-                type:"ADD_MEMBER",
-                index: 1
-            })
+
         }).catch(function(err){
 
         })

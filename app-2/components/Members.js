@@ -7,6 +7,11 @@ import {getMember, totalMealToday} from '../actions/member';
 import Member from './Member';
 
 class Members extends React.Component {
+    static navigationOptions = {
+      tabBarLabel: 'Members',
+
+    };
+
     constructor () {
       super()
       this.state = {
@@ -43,7 +48,7 @@ class Members extends React.Component {
       return (
 
         <ScrollView>
-          <View>
+          <View style={styles.histContainer}>
             {output}
           </View>
 

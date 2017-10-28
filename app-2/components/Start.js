@@ -3,18 +3,16 @@ import { connect } from 'react-redux'
 import { View, StyleSheet, Button } from 'react-native';
 import { TabViewAnimated, TabBar, SceneMap } from 'react-native-tab-view';
 
-import {getMember, autoUpdateMeal, totalMealToday} from '../actions/member';
+import {autoUpdateMeal, totalMealToday} from '../actions/member';
 
 
 import Home from './Home';
 import Members from './Members';
 import AddMember from './AddMember';
-import MealList from './MealList';
 
 const FirstRoute = () => <Home />;
 const SecondRoute = () => <Members />;
 const ThirdRoute = () => <AddMember />;
-const FourthRoute = () => <MealList />;
 
 class Start extends PureComponent {
     static navigationOptions = {
@@ -25,8 +23,7 @@ class Start extends PureComponent {
       routes: [
           { key: '1', title: 'Home' },
           { key: '2', title: 'Member' },
-          { key: '3', title: 'Add' },
-          { key: '4', title: 'List' },
+          { key: '3', title: 'AddMember' },
         ],
         callAutoUpdateMeal: true,
     };
@@ -45,46 +42,23 @@ class Start extends PureComponent {
           callAutoUpdateMeal: false
         })
       }
-
-      if(newprops.index == 1){
-        this.setState({
-          index: 1,
-        },()=>{
-          this.props.dispatch(getMember());
-        })
-      }
-
+      
     }
 
 
 
+  _handleIndexChange = index => this.setState({ index });
 
-  _handleIndexChange = index => {
-    this.setState({ index })
-    this.onPositionChange(index);
-  };
-
-  onPositionChange(index){
-    if(index == 0){
-      this.props.dispatch(getMember());
-      this.props.dispatch(totalMealToday());
-    }else if(index == 1){
-      this.props.dispatch(getMember());
-    }else if(index == 3){
-      this.props.dispatch(getMember());
-    }else{
-
-    }
-
+  onPositionChange(){
+    alert('ok');
   }
 
-  _renderHeader = props => <TabBar style={{ backgroundColor: '#00b9e6' }} {...props} />;
+  _renderHeader = props => <TabBar {...props} />;
 
   _renderScene = SceneMap({
     '1': FirstRoute,
     '2': SecondRoute,
     '3': ThirdRoute,
-    '4': FourthRoute,
   });
 
   render() {
@@ -97,7 +71,7 @@ class Start extends PureComponent {
         renderScene={this._renderScene}
         renderHeader={this._renderHeader}
         onIndexChange={this._handleIndexChange}
-      
+        onSwipeEnd = {this.onPositionChange.bind(this)}
       />
       
       
@@ -108,16 +82,12 @@ class Start extends PureComponent {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'transparent',
-    
   },
-  label: { color: '#222' },
 });
 
 const mapStateToProps = (state) => {
   return {
-    member: state.member.member,
-    index: state.member.index
+    member: state.member.member
   };
 };
 

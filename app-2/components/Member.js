@@ -1,32 +1,27 @@
 import React from 'react';
 import { connect } from 'react-redux'
 import { Image, Text, TouchableHighlight, View, ScrollView, StyleSheet, Alert} from 'react-native';
-import { Icon, FormLabel, FormInput, CheckBox, Button, FormValidationMessage, Avatar, Card, ButtonGroup} from 'react-native-elements';
+import { FormLabel, FormInput, CheckBox, Button, FormValidationMessage, Avatar, Card, ButtonGroup} from 'react-native-elements';
 
 import {getMember, mealTodayAction} from '../actions/member';
 
 class Member extends React.Component {
+    static navigationOptions = {
+      tabBarLabel: 'Members',
+
+    };
+
     constructor (props) {
       super()
       this.state = {
         checkedToday: props.member.today_meal,
         checked: props.member.auto_meal,
-        member: props.member,
-        disable: false
+        member: props.member
       }
       // this.updateMealToday = this.updateMealToday.bind(this)
     }
     // ------------------------------------------------------------------
-    componentWillReceiveProps(newprops){
-      var d = new Date();
-      var hour = d.getHours();
-      if(hour>10){
-        this.setState({
-          disable: true
-        })
-        
-      }
-    }
+
 
 
     // ------------------------------------------------------------------
@@ -40,23 +35,15 @@ class Member extends React.Component {
       }else{
         var val = 'OFF'
       }
-
-      var d = new Date();
-      var hour = d.getHours();
-      if(hour>10){
-        alert("Times Up To Update");
-      }else{
-        Alert.alert(
-            "   " + val,
-            'Are You Sure You Want To ' + val + ' Your Meal Today',
-            [
-                { text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel' },
-                { text: 'Yes', onPress: () => { that.mealTodayHelper(mealToday) } },
-            ],
-            { cancelable: false }
-        )
-      }
-
+      Alert.alert(
+          "   " + val,
+          'Are You Sure You Want To ' + val + ' Your Meal Today',
+          [
+              { text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel' },
+              { text: 'Yes', onPress: () => { that.mealTodayHelper(mealToday) } },
+          ],
+          { cancelable: false }
+      )
       
     }
 
@@ -143,11 +130,11 @@ class Member extends React.Component {
                   title={this.state.member.name}
                   >
                   
-                  <View style={{flex:1,justifyContent: "center",alignItems: "center"}}>
+                  <View style={{flexDirection: "row"}}>
                       <Image
                           style={styles.image}
                           resizeMode="cover"
-                          source={require('../assets/img-03.jpg')}
+                          source={{ uri: "https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg" }}
                       />
                   </View>
                   <Text style={{ marginBottom: 10, marginTop: 10 }}>
@@ -162,8 +149,9 @@ class Member extends React.Component {
 
                   <Button
                   onPress={() => this.updateMealToday()}
-                  disabled = {this.state.disable}
-                  backgroundColor = {this.state.checkedToday ? '#26ceab' : '#ff6e6e'}
+                  disabled = {false}
+                  backgroundColor = {this.state.checkedToday ? 'green' : 'red'}
+                  large
                   title= { this.state.checkedToday ? 'Today Meal: YES' : 'Today Meal: NO'} />
 
                       
@@ -184,16 +172,15 @@ class Member extends React.Component {
         paddingBottom: 30
     },
     image:{
-        width: 120,
-        height: 120,
-        borderRadius:100,
+        width: 80,
+        height: 80,
     }
 })
 
 const mapStateToProps = (state) => {
   
   return {
-    newMember: state.member.member
+   
   };
 };
 
